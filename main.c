@@ -13,7 +13,7 @@ const char	tab_str[NB_STRINGS][MAX_STRING_LEN] = {
 	"bonjour\0",
 	"bonjouR",
 	"Bonjour",
-	"bonjours"
+	"bonjours",
 	"adaoAIUYodjapoj\0asdajsdd",
 	"345345oihhsf      ihfoi",
 	"csdcs",
@@ -23,7 +23,8 @@ const char	tab_str[NB_STRINGS][MAX_STRING_LEN] = {
 
 
 extern size_t	ft_strlen(const char *s);
-char			*ft_strcpy(char *dst, const char *src);
+extern char		*ft_strcpy(char *dst, const char *src);
+extern int		ft_strcmp(const char *s1, const char *s2);
 
 
 void	test_ft_strlen(void)
@@ -93,10 +94,50 @@ void	test_ft_strcpy(void)
 	}
 }
 
+void	test_ft_strcmp(void)
+{
+	size_t	i;
+	size_t	j;
+	int		off_cmp;
+	int		my_cmp;
+
+	i = 0;
+	printf("------- Tests on ft_strcmp --------\n\n");
+	while (i < NB_STRINGS)
+	{
+		j = 0;
+		while (j < NB_STRINGS)
+		{
+			off_cmp = strcmp(tab_str[i], tab_str[j]);
+			my_cmp = ft_strcmp(tab_str[i], tab_str[j]);
+			printf("TEST %3zu: ", i * NB_STRINGS + j);
+			if (off_cmp != my_cmp)
+			{
+				printf("\033[31m");
+				printf("FAILURE\n");
+				printf("\033[39m");
+				printf("Cmp are different for strings \"%s\" and \"%s\":\n", tab_str[i], tab_str[j]);
+				printf("Official cmp = %d\n", off_cmp);
+				printf("My cmp       = %d\n", my_cmp);
+			}
+			else
+			{
+				printf("\033[32m");
+				printf("SUCCESS\n");
+				printf("\033[39m");
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 int		main()
 {
 	test_ft_strlen();
 	printf("\n");
 	test_ft_strcpy();
+	printf("\n");
+	test_ft_strcmp();
 	return (0);
 }
