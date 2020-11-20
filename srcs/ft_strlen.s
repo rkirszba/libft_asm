@@ -6,12 +6,12 @@ _ft_strlen:
     mov rbp, rsp						
     xor rax, rax		
 
-loop:
+_loop:
     cmp BYTE [rdi + rax], 0x0				
-    je end
+    je _end
 	inc rax
-	jmp loop
+	jmp _loop
 
-end:
+_end:
 	leave
 	ret

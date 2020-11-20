@@ -6,15 +6,15 @@ _ft_strcpy:
 	mov rbp, rsp
 	xor rcx, rcx
 
-loop:
+_loop:
 	cmp BYTE [rsi + rcx], 0x0
-	je end
+	je _end
 	mov al, [rsi + rcx]
 	mov [rdi + rcx], al
 	inc rcx
-	jmp loop
+	jmp _loop
 
-end:
+_end:
 	mov al, [rsi + rcx]
 	mov [rdi + rcx], al
 	mov rax, rdi

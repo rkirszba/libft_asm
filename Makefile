@@ -6,7 +6,7 @@
 #    By: rkirszba <rkirszba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 20:33:55 by rkirszba          #+#    #+#              #
-#    Updated: 2020/11/19 15:10:02 by rkirszba         ###   ########.fr        #
+#    Updated: 2020/11/19 16:32:01 by rkirszba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,8 @@ CFLAGS 		+= -g
 SRCS_DIR	= srcs/
 SRCS_NAMES	= ft_strlen.s\
 			  ft_strcpy.s\
-			  ft_strcmp.s
+			  ft_strcmp.s\
+			  ft_write.s
 
 OBJS_DIR	= objs/
 
