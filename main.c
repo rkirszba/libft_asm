@@ -33,6 +33,7 @@ extern int		ft_strcmp(const char *s1, const char *s2);
 extern ssize_t	ft_write(int fildes, const void *buf, size_t nbyte);
 extern ssize_t	ft_read(int fildes, void *buf, size_t nbyte);
 extern char 	*ft_strdup(const char *s1);
+extern int		ft_atoi_base(char *str, char *base);
 
 
 void	test_ft_strlen(void)
@@ -73,7 +74,6 @@ void	test_ft_strcpy(void)
 	char	*off_str;
 	char	*my_str;
 	
-	i = 0;
 	off_str = (char*)malloc(sizeof(*off_str) * MAX_STRING_LEN);
 	my_str = (char*)malloc(sizeof(*my_str) * MAX_STRING_LEN);
 	i = 0;
@@ -346,17 +346,77 @@ void	test_ft_read()
 	remove(my_file);
 }
 
+void	test_ft_strdup(void)
+{
+	size_t	i;
+	char	*off_str;
+	char	*my_str;
+	
+	i = 0;
+	printf("------- Tests on ft_strdup --------\n\n");
+	while (i < NB_STRINGS)
+	{
+		off_str = strdup(tab_str[i]);
+		my_str = ft_strdup(tab_str[i]);
+		printf("TEST %2zu: ", i);
+		if (strcmp(off_str, my_str) != 0)
+		{
+			printf("\033[31m");
+			printf("FAILURE\n");
+			printf("\033[39m");
+			printf("Strings are different:\n");
+			printf("Official str = \"%s\"\n", off_str);
+			printf("My str       = \"%s\"\n", my_str);
+		}
+		else if (my_str == tab_str[i])
+		{
+			printf("\033[31m");
+			printf("FAILURE\n");
+			printf("\033[39m");
+			printf("Cheater, you used the same string !:\n");
+		}
+		else
+		{
+			printf("\033[32m");
+			printf("SUCCESS\n");
+			printf("\033[39m");
+		}
+		free(off_str);
+		free(my_str);
+		i++;
+	}
+}
+
+// extern int	ft_check_dup(const char *s);
+// extern int	ft_get_index(const char *s, char c);
 
 int		main()
 {
-	test_ft_strlen();
-	printf("\n");
-	test_ft_strcpy();
-	printf("\n");
-	test_ft_strcmp();
-	printf("\n");
-	test_ft_write();
-	printf("\n");
-	test_ft_read();
+	// test_ft_strlen();
+	// printf("\n");
+	// test_ft_strcpy();
+	// printf("\n");
+	// test_ft_strcmp();
+	// printf("\n");
+	// test_ft_write();
+	// printf("\n");
+	// test_ft_read();
+	// printf("\n");
+	// test_ft_strdup();
+
+	// printf("%d\n", ft_get_index("0123456789", '1'));
+	// printf("%d\n", ft_get_index("0123456789", '5'));
+	// printf("%d\n", ft_get_index("0123456789", '9'));
+	// printf("%d\n", ft_get_index("0123456789", '0'));
+	// printf("%d\n", ft_get_index("0123456789", 'a'));
+	// printf("%d\n", ft_get_index("0123456789", '8'));
+	// printf("%d\n", ft_get_index("0123456789", 'b'));
+
+
+	printf("%d\n", ft_atoi_base("-125", "0123456789"));
+	printf("%d\n", ft_atoi_base("12ab89f", "0123456789abcdef"));
+	printf("%d\n", ft_atoi_base("010101001", "01"));
+	printf("%d\n", ft_atoi_base("+l2147483647", "0123456789"));
+	printf("%d\n", ft_atoi_base("-2147483648", "0123456789"));
 	return (0);
 }
