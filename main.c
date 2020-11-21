@@ -49,6 +49,7 @@ extern ssize_t	ft_write(int fildes, const void *buf, size_t nbyte);
 extern ssize_t	ft_read(int fildes, void *buf, size_t nbyte);
 extern char 	*ft_strdup(const char *s1);
 extern int		ft_atoi_base(char *str, char *base);
+extern void		ft_list_push_front(t_list **begin_list, void *data);
 
 
 void	test_ft_strlen(void)
@@ -486,30 +487,70 @@ void	test_ft_atoi_base(void)
 	}
 }
 
-extern t_list	*ft_create_elem(void *data);
+void	test_ft_list_push_front(void)
+{
+	t_list	*begin_list;
+	t_list	*curs;
+	char	*off_string = "I think it is working!";
+	char	*my_string;
+	char	*tmp;
+	size_t	len;
+
+	begin_list = NULL;
+	ft_list_push_front(&begin_list, "working!");
+	ft_list_push_front(&begin_list, "is ");
+	ft_list_push_front(&begin_list, "it ");
+	ft_list_push_front(&begin_list, "think ");
+	ft_list_push_front(&begin_list, "I ");
+	my_string = malloc(1);
+	my_string[0] = '\0';
+	curs = begin_list;
+	while (curs)
+	{
+		len = strlen(my_string);
+		tmp = my_string;
+		my_string = malloc(strlen(my_string) + strlen(curs->data) + 1);
+		my_string = strcpy(my_string, tmp);
+		free(tmp);
+		strcat(my_string, curs->data);
+		curs = curs->next;
+	}
+	printf("------- Tests on ft_list_push_front --------\n\n");
+	printf("TEST 0: ");
+	if (strcmp(off_string, my_string) != 0)
+	{
+		printf("\033[31m");
+		printf("FAILURE\n");
+		printf("\033[39m");
+		printf("Strings are different:\n");
+		printf("Official string = \"%s\"\n", off_string);
+		printf("My string       = \"%s\"\n", my_string);
+	}
+	else
+	{
+		printf("\033[32m");
+		printf("SUCCESS\n");
+		printf("\033[39m");
+	}
+}
+
 
 int		main()
 {
-	// test_ft_strlen();
-	// printf("\n");
-	// test_ft_strcpy();
-	// printf("\n");
-	// test_ft_strcmp();
-	// printf("\n");
-	// test_ft_write();
-	// printf("\n");
-	// test_ft_read();
-	// printf("\n");
-	// test_ft_strdup();
-	// printf("\n");
-	// test_ft_atoi_base();
-	
-	t_list	*elem;
-	char	*data = "bonjour";
-
-	elem = ft_create_elem((void*)data);
-	printf("data = %s\n", elem->data);
-	printf("next = %p\n", elem->next);
-
+	test_ft_strlen();
+	printf("\n");
+	test_ft_strcpy();
+	printf("\n");
+	test_ft_strcmp();
+	printf("\n");
+	test_ft_write();
+	printf("\n");
+	test_ft_read();
+	printf("\n");
+	test_ft_strdup();
+	printf("\n");
+	test_ft_atoi_base();
+	printf("\n");
+	test_ft_list_push_front();
 	return (0);
 }

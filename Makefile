@@ -6,7 +6,7 @@
 #    By: rkirszba <rkirszba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 20:33:55 by rkirszba          #+#    #+#              #
-#    Updated: 2020/11/21 16:12:46 by rkirszba         ###   ########.fr        #
+#    Updated: 2020/11/21 16:33:52 by rkirszba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ SRCS_NAMES	= ft_strlen.s\
 			  ft_atoi_base.s\
 			  ft_check_dup.s\
 			  ft_get_index.s\
-			  ft_create_elem.s
+			  ft_create_elem.s\
+			  ft_list_push_front.s
 
 #BONUS_EXT			= _bonus
 #BONUS_SRCS_DIR		= srcs_bonus
