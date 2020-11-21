@@ -8,7 +8,7 @@ section .text
 _check_no_invalid:
 	cmp dl, 0x2b
 	je _input_error
-	cmp dl, 0x2c
+	cmp dl, 0x2d
 	je _input_error
 	cmp dl, 0x20
 	je _input_error

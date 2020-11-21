@@ -8,9 +8,24 @@
 #include <sys/uio.h>
 #include <sys/errno.h>
 
-#define	NB_STRINGS		11
-#define MAX_STRING_LEN	100
-#define	READ_SIZE		14
+#define	NB_STRINGS			11
+#define MAX_STRING_LEN		100
+#define	READ_SIZE			14
+
+#define NB_ATOI_BASE_TEST	14
+
+typedef struct	s_test_atoi_base
+{
+	char	*str;
+	char	*base;
+	int		expected_result;	
+}				t_test_atoi_base;
+
+typedef struct	s_list
+{
+	struct s_list	*next;
+	void			*data;
+}				t_list;
 
 const char	tab_str[NB_STRINGS][MAX_STRING_LEN] = {
 	"",
@@ -387,8 +402,91 @@ void	test_ft_strdup(void)
 	}
 }
 
-// extern int	ft_check_dup(const char *s);
-// extern int	ft_get_index(const char *s, char c);
+void	init_atoi_base_tab(t_test_atoi_base *tab)
+{
+	tab[0].str = "aaaaaaaa";
+	tab[0].base = "";
+	tab[0].expected_result = 0;
+	tab[1].str = "aaaaaaa";
+	tab[1].base = "a";
+	tab[1].expected_result = 0;
+	tab[2].str = "0";
+	tab[2].base = "0123456789";
+	tab[2].expected_result = 0;
+	tab[3].str = "-1";
+	tab[3].base = "0123456789";
+	tab[3].expected_result = -1;
+	tab[4].str = "+1";
+	tab[4].base = "0123456789";
+	tab[4].expected_result =  1;
+	tab[5].str = "2147483647";
+	tab[5].base = "0123456789";
+	tab[5].expected_result = 2147483647;
+	tab[6].str = "7fffffff";
+	tab[6].base = "0123456789abcdef";
+	tab[6].expected_result = 2147483647;
+	tab[6].str = "-ffffffff";
+	tab[6].base = "0123456789abcdef";
+	tab[6].expected_result = 1;
+	tab[7].str = "-80000000";
+	tab[7].base = "0123456789abcdef";
+	tab[7].expected_result = -2147483648;
+	tab[8].str = "12312";
+	tab[8].base = "00123";
+	tab[8].expected_result = 0;
+	tab[9].str = "12312";
+	tab[9].base = "01230";
+	tab[9].expected_result = 0;
+	tab[10].str = "123";
+	tab[10].base = "-01230";
+	tab[10].expected_result = 0;
+	tab[11].str = "123";
+	tab[11].base = "01230+";
+	tab[11].expected_result = 0;
+	tab[12].str = "1234";
+	tab[12].base = "0123";
+	tab[12].expected_result = 0;
+	tab[13].str = "1111111111111111111111111111111";
+	tab[13].base = "01";
+	tab[13].expected_result = 2147483647;
+	tab[13].str = "11111111111111111111111111111111";
+	tab[13].base = "01";
+	tab[13].expected_result = -1;	
+}
+
+void	test_ft_atoi_base(void)
+{
+	size_t					i;
+	t_test_atoi_base		tab[NB_ATOI_BASE_TEST];
+	int						result;
+	
+	init_atoi_base_tab(tab);
+	i = 0;
+	printf("------- Tests on ft_atoi_base --------\n\n");
+	while (i < NB_ATOI_BASE_TEST)
+	{
+		result = ft_atoi_base(tab[i].str, tab[i].base);
+		printf("TEST %2zu: ", i);
+		if (result != tab[i].expected_result)
+		{
+			printf("\033[31m");
+			printf("FAILURE\n");
+			printf("\033[39m");
+			printf("Results are different:\n");
+			printf("Expected result = %d\n", tab[i].expected_result);
+			printf("My result       = %d\n", result);
+		}
+		else
+		{
+			printf("\033[32m");
+			printf("SUCCESS\n");
+			printf("\033[39m");
+		}
+		i++;
+	}
+}
+
+extern t_list	*ft_create_elem(void *data);
 
 int		main()
 {
@@ -403,20 +501,15 @@ int		main()
 	// test_ft_read();
 	// printf("\n");
 	// test_ft_strdup();
+	// printf("\n");
+	// test_ft_atoi_base();
+	
+	t_list	*elem;
+	char	*data = "bonjour";
 
-	// printf("%d\n", ft_get_index("0123456789", '1'));
-	// printf("%d\n", ft_get_index("0123456789", '5'));
-	// printf("%d\n", ft_get_index("0123456789", '9'));
-	// printf("%d\n", ft_get_index("0123456789", '0'));
-	// printf("%d\n", ft_get_index("0123456789", 'a'));
-	// printf("%d\n", ft_get_index("0123456789", '8'));
-	// printf("%d\n", ft_get_index("0123456789", 'b'));
+	elem = ft_create_elem((void*)data);
+	printf("data = %s\n", elem->data);
+	printf("next = %p\n", elem->next);
 
-
-	printf("%d\n", ft_atoi_base("-125", "0123456789"));
-	printf("%d\n", ft_atoi_base("12ab89f", "0123456789abcdef"));
-	printf("%d\n", ft_atoi_base("010101001", "01"));
-	printf("%d\n", ft_atoi_base("+l2147483647", "0123456789"));
-	printf("%d\n", ft_atoi_base("-2147483648", "0123456789"));
 	return (0);
 }
