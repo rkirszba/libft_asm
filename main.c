@@ -50,6 +50,7 @@ extern ssize_t	ft_read(int fildes, void *buf, size_t nbyte);
 extern char 	*ft_strdup(const char *s1);
 extern int		ft_atoi_base(char *str, char *base);
 extern void		ft_list_push_front(t_list **begin_list, void *data);
+extern int		ft_list_size(t_list *begin_list);
 
 
 void	test_ft_strlen(void)
@@ -535,22 +536,59 @@ void	test_ft_list_push_front(void)
 }
 
 
+void	test_ft_list_size(void)
+{
+	t_list	*elem;
+	int		off_size;
+	int		my_size;
+
+	elem = NULL;
+	off_size = -1;
+
+	printf("------- Tests on ft_list_size --------\n\n");
+	while (++off_size < 10)
+	{
+		my_size = ft_list_size(elem);
+		printf("TEST %2d: ", off_size);
+		if (off_size != my_size)
+		{
+			printf("\033[31m");
+			printf("FAILURE\n");
+			printf("\033[39m");
+			printf("Sizes are different:\n");
+			printf("Official size = %d\n", off_size);
+			printf("My size       = %d\n", my_size);
+		}
+		else
+		{
+			printf("\033[32m");
+			printf("SUCCESS\n");
+			printf("\033[39m");
+		}
+		ft_list_push_front(&elem, NULL);
+	}
+}
+
+
 int		main()
 {
-	test_ft_strlen();
-	printf("\n");
-	test_ft_strcpy();
-	printf("\n");
-	test_ft_strcmp();
-	printf("\n");
-	test_ft_write();
-	printf("\n");
-	test_ft_read();
-	printf("\n");
-	test_ft_strdup();
-	printf("\n");
-	test_ft_atoi_base();
-	printf("\n");
-	test_ft_list_push_front();
+	// test_ft_strlen();
+	// printf("\n");
+	// test_ft_strcpy();
+	// printf("\n");
+	// test_ft_strcmp();
+	// printf("\n");
+	// test_ft_write();
+	// printf("\n");
+	// test_ft_read();
+	// printf("\n");
+	// test_ft_strdup();
+	// printf("\n");
+	// test_ft_atoi_base();
+	// printf("\n");
+	// test_ft_list_push_front();
+	// printf("\n");
+	test_ft_list_size();
+
 	return (0);
 }
