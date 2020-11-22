@@ -13,6 +13,7 @@
 #define	READ_SIZE			14
 
 #define NB_ATOI_BASE_TEST	14
+#define NB_SORT_LIST_TEST	10
 
 typedef struct	s_test_atoi_base
 {
@@ -23,8 +24,9 @@ typedef struct	s_test_atoi_base
 
 typedef struct	s_list
 {
-	struct s_list	*next;
 	void			*data;
+	struct s_list	*next;
+
 }				t_list;
 
 const char	tab_str[NB_STRINGS][MAX_STRING_LEN] = {
@@ -51,6 +53,8 @@ extern char 	*ft_strdup(const char *s1);
 extern int		ft_atoi_base(char *str, char *base);
 extern void		ft_list_push_front(t_list **begin_list, void *data);
 extern int		ft_list_size(t_list *begin_list);
+extern void		ft_list_sort(t_list **begin_list, int (*cmp)());
+
 
 
 void	test_ft_strlen(void)
@@ -569,26 +573,113 @@ void	test_ft_list_size(void)
 	}
 }
 
+int		get_test_len(char tab[10][2])
+{
+	int		i;
+
+	i = 0;
+	while (tab[i][0])
+		i++;
+	return (i);
+}
+
+void	test_ft_list_sort(void)
+{
+	char	tab[NB_SORT_LIST_TEST][10][2] = {
+		{"0", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0"},
+		{"0", "1", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0"},
+		{"1", "0", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0"},
+		{"1", "0", "2", "\0", "\0", "\0", "\0", "\0", "\0", "\0"},
+		{"0", "1", "3", "2", "\0", "\0", "\0", "\0", "\0", "\0"},
+		{"0", "2", "1", "3", "\0", "\0", "\0", "\0", "\0", "\0"},
+		{"5", "0", "1", "2", "3", "4", "\0", "\0", "\0", "\0"},
+		{"1", "0", "3", "2", "5", "4", "7", "6", "\0", "\0"},
+		{"8", "7", "6", "5", "4", "3", "2", "0", "1", "\0"},
+		{"8", "7", "6", "5", "4", "3", "2", "1", "0", "\0"},
+
+	};
+	t_list	*begin_tree;
+	t_list	*cursor;
+	int		test_len;
+	int		i;
+	int		j;
+	int		k;
+	int		success;
+
+	i = -1;
+	printf("------- Tests on ft_list_sort --------\n\n");
+	while (++i < NB_SORT_LIST_TEST)
+	{
+		success = 1;
+		printf("TEST %2d: ", i);
+		begin_tree = NULL;
+		test_len = get_test_len(tab[i]);
+		j = test_len;
+		while (--j >= 0)
+			ft_list_push_front(&begin_tree, tab[i][j]);
+		ft_list_sort(&begin_tree, &strcmp);
+		cursor = begin_tree;
+		while (++j < test_len)
+		{
+			if ((char)(j + 0x30) != ((char*)(cursor->data))[0])
+			{
+				printf("\033[31m");
+				printf("FAILURE\n");
+				printf("\033[39m");
+				printf("List is not sorted:\n");
+				printf("Expected list = ");
+				k = -1;
+				while (++k < test_len)
+					printf("%d ", k);
+				printf("\n");
+				printf("My list       = ");
+				while (begin_tree)
+				{
+					printf("%s ", begin_tree->data);
+					begin_tree = begin_tree->next;
+				}
+				printf("\n");
+				success = 0;
+				break ;
+			}
+			cursor = cursor->next;
+		}
+		if (success == 1)
+		{
+			printf("\033[32m");
+			printf("SUCCESS\n");
+			printf("\033[39m");
+		}
+		else
+			success = 1;
+	}
+}
 
 int		main()
 {
-	// test_ft_strlen();
-	// printf("\n");
-	// test_ft_strcpy();
-	// printf("\n");
-	// test_ft_strcmp();
-	// printf("\n");
-	// test_ft_write();
-	// printf("\n");
-	// test_ft_read();
-	// printf("\n");
-	// test_ft_strdup();
-	// printf("\n");
-	// test_ft_atoi_base();
-	// printf("\n");
-	// test_ft_list_push_front();
-	// printf("\n");
+	test_ft_strlen();
+	printf("\n");
+	test_ft_strcpy();
+	printf("\n");
+	test_ft_strcmp();
+	printf("\n");
+	test_ft_write();
+	printf("\n");
+	test_ft_read();
+	printf("\n");
+	test_ft_strdup();
+	printf("\n");
+	test_ft_atoi_base();
+	printf("\n");
+	test_ft_list_push_front();
+	printf("\n");
 	test_ft_list_size();
+	printf("\n");
+	test_ft_list_sort();
+
+
+
+
 
 	return (0);
 }

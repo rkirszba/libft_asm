@@ -11,7 +11,7 @@ _loop:
 	inc rax
 	cmp rdi, 0x0
 	je _end
-	mov r8, [rdi]
+	mov r8, [rdi + 0x8]
 	mov rdi, r8
 	jmp _loop
 

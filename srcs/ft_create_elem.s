@@ -11,9 +11,9 @@ _ft_create_elem:
 	call _malloc
 	cmp rax, 0x0
 	je _end
-	mov QWORD [rax], 0x0;
+	mov QWORD [rax + 0x8], 0x0;
 	mov r8, QWORD [rsp]
-	mov [rax + 0x8], r8
+	mov [rax], r8
 
 _end:
 	leave

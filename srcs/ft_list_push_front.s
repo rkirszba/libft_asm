@@ -15,7 +15,7 @@ _ft_list_push_front:
 	mov rdi, [rsp]
 	mov r8, [rdi]
 	mov QWORD [rdi], rax
-	mov [rax], r8
+	mov [rax + 0x8], r8
 
 _end:
 	leave
