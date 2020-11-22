@@ -13,7 +13,8 @@
 #define	READ_SIZE			14
 
 #define NB_ATOI_BASE_TEST	14
-#define NB_SORT_LIST_TEST	10
+#define NB_SORT_LIST_TEST	11
+#define NB_REMOVE_LIST_TEST	9
 
 typedef struct	s_test_atoi_base
 {
@@ -28,6 +29,8 @@ typedef struct	s_list
 	struct s_list	*next;
 
 }				t_list;
+
+
 
 const char	tab_str[NB_STRINGS][MAX_STRING_LEN] = {
 	"",
@@ -54,6 +57,8 @@ extern int		ft_atoi_base(char *str, char *base);
 extern void		ft_list_push_front(t_list **begin_list, void *data);
 extern int		ft_list_size(t_list *begin_list);
 extern void		ft_list_sort(t_list **begin_list, int (*cmp)());
+extern void		ft_list_remove_if(t_list **begin_list, void *data_ref,
+				int (*cmp)(), void (*free_fct)(void *));
 
 
 
@@ -573,7 +578,7 @@ void	test_ft_list_size(void)
 	}
 }
 
-int		get_test_len(char tab[10][2])
+int		get_test_len(char tab[11][2])
 {
 	int		i;
 
@@ -583,9 +588,11 @@ int		get_test_len(char tab[10][2])
 	return (i);
 }
 
+
 void	test_ft_list_sort(void)
 {
 	char	tab[NB_SORT_LIST_TEST][10][2] = {
+		{"\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0"},
 		{"0", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0"},
 		{"0", "1", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0"},
 		{"1", "0", "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0"},
@@ -650,10 +657,91 @@ void	test_ft_list_sort(void)
 			printf("SUCCESS\n");
 			printf("\033[39m");
 		}
-		else
-			success = 1;
 	}
 }
+
+void	test_ft_list_remove_if(void)
+{
+	char	tab[NB_REMOVE_LIST_TEST * 3][11][2] = {
+		{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "\0"},
+		{"1", "2", "3", "4", "5", "6", "7", "8", "9", "\0"},
+		{"0", "\0"},
+		{"0", "0", "2", "3", "4", "5", "6", "7", "8", "9", "\0"},
+		{"2", "3", "4", "5", "6", "7", "8", "9", "\0"},
+		{"0", "\0"},
+		{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "\0"},
+		{"0", "2", "3", "4", "5", "6", "7", "8", "9", "\0"},
+		{"1", "\0"},
+		{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "\0"},
+		{"0", "1", "2", "3", "4", "5", "6", "7", "8", "\0"},
+		{"9", "\0"},
+		{"0", "1", "2", "3", "4", "5", "6", "7", "9", "9", "\0"},
+		{"0", "1", "2", "3", "4", "5", "6", "7", "\0"},
+		{"9", "\0"},
+		{"0", "1", "2", "3", "4", "0", "0", "7", "8", "0", "\0"},
+		{"1", "2", "3", "4", "7", "8", "\0"},
+		{"0", "\0"},
+		{"0", "1", "2", "3", "4", "5", "6", "7", "8", "\0"},
+		{"0", "1", "2", "3", "4", "5", "6", "7", "8", "\0"},
+		{"a", "\0"},
+		{"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "\0"},
+		{"\0"},
+		{"0", "\0"},
+		{"\0"},
+		{"\0"},
+		{"1", "\0"}, 
+	};
+	t_list	*head;
+	t_list	*cursor;
+	int		i;
+	int		j;
+	int		success;
+
+	i = -1;
+	printf("------- Tests on ft_list_remove_if --------\n\n");
+	while (++i < NB_REMOVE_LIST_TEST)
+	{
+		success =1;
+		head = NULL;
+		j = get_test_len(tab[i * 3]);
+		while (--j >= 0)
+			ft_list_push_front(&head, strdup(tab[i * 3][j]));
+		ft_list_remove_if(&head, tab[i * 3 + 2], &strcmp, &free);
+		printf("TEST %2d: ", i);
+		cursor = head;
+		while (tab[i * 3 + 1][++j][0])
+		{
+			if (strcmp(tab[i * 3 + 1][j], cursor->data) != 0)
+			{
+				printf("\033[31m");
+				printf("FAILURE\n");
+				printf("\033[39m");
+				printf("Expected list = ");
+				j = -1;
+				while (tab[i * 3 + 1][++j][0])
+		 			printf("%s ", tab[i * 3 + 1][j]);
+				printf("\n");
+				printf("My list       = ");
+				while (head)
+				{
+					printf("%s ", head->data);
+					head = head->next;
+				}
+				printf("\n");
+				success = 0;
+				break ;
+			}
+			cursor = cursor->next;
+		}
+		if (success == 1)
+		{
+			printf("\033[32m");
+			printf("SUCCESS\n");
+			printf("\033[39m");
+		}
+	}
+}
+
 
 int		main()
 {
@@ -676,10 +764,7 @@ int		main()
 	test_ft_list_size();
 	printf("\n");
 	test_ft_list_sort();
-
-
-
-
-
+	printf("\n");
+	test_ft_list_remove_if();
 	return (0);
 }
