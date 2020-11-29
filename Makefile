@@ -6,7 +6,7 @@
 #    By: rkirszba <rkirszba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 20:33:55 by rkirszba          #+#    #+#              #
-#    Updated: 2020/11/29 19:35:15 by rkirszba         ###   ########.fr        #
+#    Updated: 2020/11/29 19:44:16 by rkirszba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,21 +41,12 @@ SRCS_NAMES	= ft_strlen.s\
 			  ft_list_sort.s\
 			  ft_list_remove_if.s
 
-#BONUS_EXT			= _bonus
-#BONUS_SRCS_DIR		= srcs_bonus
-#BONUS_SRCS_NAMES	= ft_atoi_base
-
 
 OBJS_DIR		= objs/
-#BONUS_OBJS_DIR	= objs_bonus
 
 $(shell mkdir -p $(OBJS_DIR))
-#$(shell mkdir -p $(OBJS_BONUS_DIR))
 SRCS		= $(addprefix $(SRCS_DIR),$(SRCS_NAMES))
 OBJS		= $(SRCS:$(SRCS_DIR)%.s=$(OBJS_DIR)%.o)
-
-#BONUS_SRCS	= $(addprefix $(BONUS_RCS_DIR)/,$(BONUS_SRCS_NAMES)$(BONUS_EXT)$(EXT))
-#BONUS_OBJS	= $(BONUS_SRCS:$(BONUS_SRCS_DIR)%$(EXT)=$(BONUS_OBJS_DIR)%.o)
 
 
 all: $(NAME)
@@ -66,11 +57,6 @@ $(NAME): $(OBJS)
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.s Makefile
 	$(NS) $< -o $@
 
-#bonus: $(OBJS) $(BONUS_OBJS)
-#	$(AR) $(NAME) $(OBJS) $(BONUS_OBJS)
-
-#$(BONUS_OBJS_DIR)%.o: $(BONUS_SRCS_DIR)%$(EXT) Makefile
-#	$(NS) $< -o $@
 
 test: $(NAME) main.c
 	$(CC) $(CFLAGS) main.c $(OBJS) -o $(TESTOR) -L. -lASM
